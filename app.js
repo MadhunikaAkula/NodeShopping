@@ -1,20 +1,22 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use('/add',(req, res, next) => {
-    console.log("second middleware");
-    res.send("<h1>Express with add product</h1>")      // res.send will automatically set the header text/html
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+const adminroutes=require('./routes/admin');
+const shoproutes=require('./routes/shop');
+
+
+app.use('/admin',adminroutes);
+app.use(shoproutes);
+
+app.use((req,res,next)=>{
+    res.status(404).send("<h1>page not found</h1>");
 });
 
-app.use('/', (req, res, next) => {
-    console.log("first middleware");
-    res.send("<h1>Express with no route</h1>")         
-    // next();                                         //next will allow to work with another middleware
-});
-
-// const server = http.createServer(app);
-
-app.listen(3000, () => {
-    console.log("server created")
+app.listen(3300, () => {
+    console.log("server created");
 });

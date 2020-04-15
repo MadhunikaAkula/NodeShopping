@@ -1,3 +1,4 @@
+(*common for every html page with active,can add additional styles and additional content )
 <!DOCTYPE html>
 html(lang="en")
     head
@@ -5,7 +6,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title #{pageTitle}
         link(rel="stylesheet", href="/css/main.css")
-        block styles
+        block styles     
     body
       header.main-header
             nav.main-header__nav
@@ -16,4 +17,5 @@ html(lang="en")
                         a(href="/admin/add-product",class=(path==="/admin/add-product"?'active':'')) Add Product
 
     main
-    block content             
+    block content  
+               

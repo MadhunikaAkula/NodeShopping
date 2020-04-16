@@ -1,11 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressHbs=require('express-handlebars');
 const path=require('path');
 
 const app = express();
+// app.engine('hbs',expressHbs({layoutsDir:'views/layouts/',defaultLayout:'main-layout',extname:'hbs'}));
+// app.set('view engine','hbs');//configuring handlebars to express  
+// app.set('view engine','pug'); 
+ app.set('view engine','ejs');  
+ app.set('views','views')//to know express about our views
 
-app.set('view engine','pug');//configuring pug to express
-app.set('views','views')//to know express aboout our views
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

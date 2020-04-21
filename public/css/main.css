@@ -30,7 +30,12 @@ form {
   display: flex;
   align-items: center;
 }
-
+.image{
+  height: 20rem;
+}
+.image img{
+  height: 100%;
+}
 .main-header__nav {
   height: 100%;
   display: none;

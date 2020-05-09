@@ -1,16 +1,26 @@
-// const mysql = require('mysql2');
-// const pool = mysql.createPool({
-//     host: 'localhost',
-//     user: 'root',
-//     database: 'shopping-cart',
-//     password: 'admin'
-// });     
-//sql need to create pool to manage connections for each query.
-//sequelize object will automatically create pool on intialization .
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('node-shopping', 'root', 'admin', {
-    dialect: 'mysql',
-    host: 'localhost'
-})
-module.exports = sequelize;
+let _db;
+
+const mongoConnect = callback => {
+  MongoClient.connect('mongodb+srv://madhu_301:madhu_301_mongo@cluster0-0aj5t.mongodb.net/shop?retryWrites=true&w=majority',
+  { useUnifiedTopology: true })
+    .then(client => {
+      _db = client.db();
+      console.log('Connected!');
+      callback();
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+const getDb = () => {
+  if (_db) {
+    return _db;
+  }
+  throw 'No database found!';
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;

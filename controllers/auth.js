@@ -92,7 +92,11 @@ exports.postSignup = (req, res, next) => {
         subject: 'WELcome to shoopping cart',
         html: '<h1>WELcome to shoopping cart</h1>'
       })
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
@@ -144,7 +148,7 @@ exports.postLogin = (req, res, next) => {
               password: password,
             },
             validationErrors: [],
-  
+
           });
         })
         .catch(err => {
@@ -205,7 +209,11 @@ exports.postReset = (req, res, next) => {
           }
         )
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
   })
 
 }
@@ -229,8 +237,10 @@ exports.getNewPassword = (req, res, next) => {
       })
     })
     .catch(err => {
-      console.log(err);
-    })
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 exports.postUpdatePassword = (req, res, next) => {
   const newpassword = req.body.newpassword;
@@ -257,6 +267,8 @@ exports.postUpdatePassword = (req, res, next) => {
       res.redirect('/login');
     })
     .catch(err => {
-      console.log(err);
-    })
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }

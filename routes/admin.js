@@ -8,7 +8,6 @@ const isAuth = require('../middleware/is-Auth');
 
 const { check,body } = require('express-validator');
 
-
 const router = express.Router();
 
 // /admin/add-product => GET
@@ -19,19 +18,17 @@ router.get('/add-product',
 router.get('/products', isAuth, adminController.getProducts);
 
 // /admin/add-product => POST
-router.post('/add-product', [
+router.post('/add-product',isAuth, [
     body('title').isString().isLength({ min: 5 }).trim(),
-    body('imageUrl').isURL(),
     body('price').isDecimal(),
     body('description').isAlphanumeric().isLength({ min: 5, max: 2000 }).trim()
-], isAuth, adminController.postAddProduct);
+],  adminController.postAddProduct);
 
 router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 
 router.post('/edit-product', isAuth,
     [
         body('title').isString().isLength({ min: 5 }).trim(),
-        body('imageUrl').isURL(),
         body('price').isDecimal(),
         body('description').isAlphanumeric().isLength({ min: 5, max: 2000 }).trim()
     ], adminController.postEditProduct);

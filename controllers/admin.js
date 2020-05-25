@@ -167,28 +167,23 @@ exports.getProducts = (req, res, next) => {
     });
 };
 
-exports.postdeleteProduct = (req, res, next) => {
+exports.postdeleteProduct = async (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId).then(product => {
+  try {
+    const product = await Product.findById(prodId)
     if (!product) {
       return next(new Error('product not found'))
     }
     filehelper.deleteFile(product.imageUrl);
-    return Product.deleteOne({ _id: prodId, userId: req.user._id })
-  })
-    .then(() => {
+    const deleteProd = await Product.deleteOne({ _id: prodId, userId: req.user._id });
+    if (deleteProd) {
       res.status(200).json({
-        "message":"deleted product"
+        "message": "deleted product"
       })
-      // console.log('DESTROYED PRODUCT');
-      // res.redirect('/admin/products');
+    }
+  } catch (err) {
+    res.status(500).json({
+      "message": "deleted product falied"
     })
-    .catch(err => {
-      res.status(500).json({
-        "message":"deleted product falied"
-      })
-      // const error = new Error(err);
-      // error.httpStatusCode = 500;
-      // return next(error);
-    });
+  }
 }

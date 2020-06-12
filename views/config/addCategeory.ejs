@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs') %>
+ <link rel="stylesheet" href="/css/categeory.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <form action="/config/<% if (editing) { %>Editcategeory<% } else { %>addCategeory<% } %>" method="POST" >
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">Categeory Name:</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="name" class="form-control" id="name"  value="<% if (editing) { %><%= cat.name %><% } %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="order" class="col-sm-3 col-form-label">Orders:</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="orders"class="form-control" id="order" value="<% if (editing) { %><%= cat.orders %><% } %>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="order" class="col-sm-3 col-form-label"></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="active" id="active" value=1 <% if(editing){ %> checked="checked" <% } %> >
+                            <label class="form-check-label" for="active">
+                                Active </label>
+                        </div>
+                        <div class="form-check margin">
+                            <input class="form-check-input" type="radio" name="active" id="inactive" value=0 <% if(editing){ %> checked="checked" <% } %>>
+                            <label class="form-check-label" for="inactive">
+                                inActive
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <% if (editing) { %>
+                    <input type="hidden" value="<%= cat._id %>" name="catId">
+                <% } %>
+                <div class="row">
+                    <!-- <div class="col-sm-10"> -->
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-success"><% if (editing) { %>Update <% } else { %>Add <% } %></button>
+                    <!-- </div> -->
+                </div>
+            </div>
+            </div>
+        </form>
+    </main>
+    <%- include('../includes/end.ejs') %>

@@ -1,25 +1,33 @@
 const Product = require('../models/product');
+const Categeory = require('../models/categeory');
 const { validationResult } = require('express-validator');
 const filehelper = require('../util/file');
 
 exports.getAddProduct = (req, res, next) => {
-  res.render('admin/edit-product', {
-    pageTitle: 'Add Product',
-    path: '/admin/add-product',
-    editing: false,
-    hasErrors: false,
-    errorMessage: null,
-    validationErrors: []
+  Categeory.find().then(cats => {
+    res.render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasErrors: false,
+      errorMessage: null,
+      validationErrors: [],
+      cats:cats
+    });
+  }).catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   });
+
 };
 
 exports.postAddProduct = (req, res, next) => {
-  console.log("coming to post add")
   const title = req.body.title;
   const image = req.file;
   const price = req.body.price;
   const description = req.body.description;
-  //no image found
+    //no image found
   if (!image) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -58,7 +66,8 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user
+    userId: req.user,
+    categeoryId:req.body.selectedcat
   });
   product
     .save()
@@ -74,10 +83,14 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
+  let cats;
   if (!editMode) {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
+  Categeory.find().then(cates=>{
+    cats=cates;
+  })
   Product.findById(prodId)
     .then(product => {
       if (!product) {
@@ -90,7 +103,8 @@ exports.getEditProduct = (req, res, next) => {
         product: product,
         hasErrors: false,
         errorMessage: null,
-        validationErrors: []
+        validationErrors: [],
+        cats:cats
       });
     })
     .catch(err => {

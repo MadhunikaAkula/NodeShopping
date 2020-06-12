@@ -22,4 +22,14 @@
   font-size: 1.2rem;
   margin: 0;
 }
-
+.box{
+  padding: 6.1px;
+  border: 1px solid black;
+}
+.border
+{
+  border: none;
+}
+.border:hover{
+  cursor: pointer;
+}

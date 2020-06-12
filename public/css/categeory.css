@@ -1,0 +1,20 @@
+.card{
+    width: 50%;
+    height: 50%;
+    margin-left: 24%;
+}
+.btn{
+margin-left: 55%;
+}
+.add{
+    color: white;
+}
+.margin{
+    margin-left: 5%;
+}
+.table-bordered{
+    border: 1px solid #dee2e6;
+    width: 38%;
+    margin-left: 31%;
+    margin-top: 2%;
+}

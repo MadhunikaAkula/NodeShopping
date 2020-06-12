@@ -40,6 +40,7 @@ const fileFilter=(req,file,cb)=>{
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const configurationRoutes=require('./routes/configuration');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -47,7 +48,8 @@ const authRoutes = require('./routes/auth');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'));
-
+// app.use (multer({storage:fileStorage,fileFilter:fileFilter}).array('photo', 5)))
+ 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(
@@ -84,6 +86,7 @@ app.use((req, res, next) => {
     });
 });
 
+app.use('/config',configurationRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
@@ -106,7 +109,7 @@ mongoose
   .connect(MONGODB_URI,{useNewUrlParser: true,useUnifiedTopology: true})
   .then(result => {
     console.log("connected")
-    app.listen(3000);
+    app.listen(4000);
   })
   .catch(err => {
     console.log(err);

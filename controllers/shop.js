@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Categeory = require('../models/categeory');
 const Order = require('../models/order');
 const fs = require('fs');
 const path = require('path');
@@ -91,6 +92,7 @@ exports.getCart = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items;
+      console.log(products,"products")
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
@@ -119,6 +121,36 @@ exports.postCart = (req, res, next) => {
     });
 };
 
+exports.maximizeProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId)
+    .then(product => {
+      return req.user.addToCart(product);
+    })
+    .then(result => {
+      res.redirect('/cart');
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+}
+exports.minimizeProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId)
+    .then(product => {
+      return req.user.minimizeProducts(product);
+    })
+    .then(result => {
+      res.redirect('/cart');
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+}
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   req.user
@@ -236,7 +268,6 @@ exports.getCheckout = (req, res, next) => {
       products.forEach(p => {
         total += p.quantity * p.productId.price;
       });
-
       return stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: products.map(p => {
@@ -297,3 +328,4 @@ exports.getCheckoutSuccess = (req, res, next) => {
       return next(error);
     });
 };
+

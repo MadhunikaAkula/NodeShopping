@@ -51,10 +51,24 @@ exports.getSignup = (req, res, next) => {
   });
 };
 exports.postSignup = (req, res, next) => {
+
   const email = req.body.email;
   const password = req.body.password;
   const confirmpassword = req.body.confirmpassword;
   const errors = validationResult(req);
+  if (req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pageTitle: 'Signup',
+      errorMessage: "please select capcha",
+      oldMessage: {
+        email: email,
+        password: password,
+        confirmpassword: confirmpassword
+      },
+      validationErrors: []
+    });
+  }
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
       path: '/signup',
@@ -77,8 +91,7 @@ exports.postSignup = (req, res, next) => {
           cart: { items: [] }
         });
       return user.save();
-    })
-    .then((result) => {
+    }).then((result) => {
       res.redirect('/login');
       // const mailOptions = {
       //   from: 'madhunikaakula30@gmail.com',

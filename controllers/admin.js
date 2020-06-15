@@ -23,6 +23,7 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
+  console.log(req.body)
   const title = req.body.title;
   const image = req.file;
   const price = req.body.price;
@@ -118,6 +119,7 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
+  const updatedCategeoryId=req.body.selectedcat
   const image = req.file;
   const updatedDesc = req.body.description;
   const errors = validationResult(req);
@@ -146,6 +148,7 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDesc;
+      product.categeoryId=updatedCategeoryId;
       if (image) {
         filehelper.deleteFile(product, imageUrl)
         product.imageUrl = image.path;

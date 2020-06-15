@@ -1,18 +1,36 @@
 <%- include('../includes/head.ejs') %>
-    </head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-    <body>
-        <%- include('../includes/navigation.ejs') %>
-        <main class="centered">
-            <h1><%= product.title %></h1>
-            <hr>
-            <div class="image">
-                <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <div class="row">
+            <div class="col-4">
+                <div class="image">
+                    <img  style="width: 425px;"src="/<%= product.imageUrl %>" alt="<%= product.title %>">
+                </div>
+                <h5 style="margin-left:15%;">Categeory:<%= categeory %></h5>
+
             </div>
-            <h2><%= product.price %></h2>
-            <p><%= product.description %></p>
-            <% if (isAuthenticated) { %>
-                <%- include('../includes/add-to-cart.ejs', {product: product}) %>
-            <% } %>
-        </main>
-        <%- include('../includes/end.ejs') %>
+            <div class="col-4" style="margin-top:5%">
+                <h6>Name:<%= product.title %></h6>
+                <h6>Price:<%= product.price %>Rs.</h6>
+                <div>
+                    <h6>Description:<%= product.description %></h6>
+                    <div>
+                        <% if (isAuthenticated) { %>
+                        <form action="/cart" method="post">
+                            <button class="btn" type="submit" style="border: 1px solid;">Add to Cart</button>
+                            <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                        </form>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <%- include('../includes/end.ejs') %>

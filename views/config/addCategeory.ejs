@@ -25,12 +25,12 @@
                     <div class="row">
                         <label for="order" class="col-sm-3 col-form-label"></label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="active" id="active" value=1 <% if(editing){ %> checked="checked" <% } %> >
+                            <input class="form-check-input" type="radio" name="active" id="active" value=1 <% if(editing){ %> <% if(cat.active) { %> checked="checked" <% } %><% } %> >
                             <label class="form-check-label" for="active">
                                 Active </label>
                         </div>
                         <div class="form-check margin">
-                            <input class="form-check-input" type="radio" name="active" id="inactive" value=0 <% if(editing){ %> checked="checked" <% } %>>
+                            <input class="form-check-input" type="radio" name="active" id="inactive" value=0 <% if(editing){ %> <% if(!cat.active) { %> checked="checked" <% } %><% } %>>
                             <label class="form-check-label" for="inactive">
                                 inActive
                             </label>

@@ -1,10 +1,12 @@
 <%- include('../includes/head.ejs') %>
+
 <!-- <link rel="stylesheet" href="/css/forms.css"> -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css">
 <link rel="stylesheet" href="/css/product.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
-<script type="text/javascript">
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script> -->
+<!-- <script type="text/javascript">
     Dropzone.options.uploadWidget = {
         paramName: 'file',
         maxFilesize: 2, // MB
@@ -36,7 +38,8 @@
             };
         }
     };
-</script>
+</script> -->
+
 </head>
 
 <body>
@@ -50,6 +53,8 @@
                 <form class="product-form "
                     action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST"
                     enctype="multipart/form-data">
+
+
 
                     <label for="title">Title:</label>
                     <input type="text" name="title"
@@ -77,15 +82,29 @@
 
 
                     <label for="description">Categeory:</label>
+                    <% if(!editing) { %>
                     <select name="selectedcat" class="form-control">
                         <optgroup>
                             <option value="">Select categeory</option>
                             <% cats.forEach(function(row){ %>
-                            <option value="<%= row._id %>" ><%= row.name %></option>
+                            <option value="<%= row._id %>"><%= row.name %></option>
                             <% }) %>
                         </optgroup>
                     </select>
+                    <% } %>
 
+                    <% if(editing) { %>
+                        <select name="selectedcat" class="form-control">
+                            <optgroup>
+                                <option value="">Select categeory</option>
+                                <% cats.forEach(function(row){ %>
+                                    <!-- <% console.log(product.categeoryId.toString()==row._id.toString(),row.name) %> -->
+                                    <% var selected = ( product.categeoryId.toString() == row._id.toString()) ? "selected" : ""; %>
+                                <option value="<%= row._id %>" <%= selected %>><%= row.name %></option>
+                                <% }) %>
+                            </optgroup>
+                        </select>
+                        <% } %>
 
                     <% if (editing) { %>
                     <input type="hidden" value="<%= product._id %>" name="productId">
@@ -95,13 +114,13 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="btn btn-success" style="margin-top:12px;margin-left: 16%"
                         type="submit"><% if (editing) { %>Update Product<% } else { %>AddProduct<% } %></button>
-                        
+
                 </form>
-               
-                <form class="form-control dropzone own" enctype="multipart/form-data" action="/config/add-product">
+
+                <!-- <form class="form-control dropzone own" enctype="multipart/form-data" action="/config/add-product">
                     <div class="fallback">
                         <input name="file" type="file" />
-                    </div>
+                    </div> -->
                 </form>
 
             </div>

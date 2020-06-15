@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const User=require('../models/user');
 const Categeory = require('../models/categeory');
 const Order = require('../models/order');
 const fs = require('fs');
@@ -38,14 +39,20 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
+  console.log("detailes calling",req.params.productId)
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then(product => {
-      res.render('shop/product-detail', {
-        product: product,
-        pageTitle: product.title,
-        path: '/products',
-      });
+      if(product){
+        Categeory.findById(product.categeoryId).then(categeory=>{
+          res.render('shop/product-detail', {
+            product: product,
+            pageTitle: product.title,
+            path: '/products',
+            categeory:categeory.name
+          });
+        })
+      }
     })
     .catch(err => {
       const error = new Error(err);
@@ -57,6 +64,8 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
+  let Allproducts;
+  let Allusers;
   Product.find()
     .countDocuments()
     .then(numProducts => {
@@ -65,8 +74,20 @@ exports.getIndex = (req, res, next) => {
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     })
+    // .then(productsList=>{
+    //   Allproducts=productsList;
+    //    return User.find();
+    // })
+    // .then(usersList=>{
+    //   Allusers=usersList;
+    //   return Allusers.map((item, i) => {
+    //     if (item._id.toString() === Allproducts[i].userId.toString()) {
+    //       return Object.assign({}, item._doc,Allproducts[i]._doc)
+    //     }
+    //   })
+    // })
     .then(products => {
-      res.render('shop/index', {
+        res.render('shop/index', {
         prods: products,
         pageTitle: 'Shop',
         path: '/',
@@ -92,7 +113,6 @@ exports.getCart = (req, res, next) => {
     .execPopulate()
     .then(user => {
       const products = user.cart.items;
-      console.log(products,"products")
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',

@@ -43,8 +43,8 @@ exports.getSignup = (req, res, next) => {
     pageTitle: 'Signup',
     errorMessage: message,
     oldMessage: {
-      // username:'',
-      // companyname:'',
+      username:'',
+      companyname:'',
       email: '',
       password: '',
       confirmpassword: ''
@@ -53,8 +53,8 @@ exports.getSignup = (req, res, next) => {
   });
 };
 exports.postSignup = (req, res, next) => {
-  // const username=req.body.username;
-  // const companyname=req.body.companyname;
+  const username=req.body.username;
+  const companyname=req.body.companyname;
   const email = req.body.email;
   const password = req.body.password;
   const confirmpassword = req.body.confirmpassword;
@@ -65,8 +65,8 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: "please select capcha",
       oldMessage: {
-        // username:username,
-        // companyname:companyname,
+        username:username,
+        companyname:companyname,
         email: email,
         password: password,
         confirmpassword: confirmpassword
@@ -80,8 +80,8 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldMessage: {
-        // username:username,
-        // companyname:companyname,
+        username:username,
+        companyname:companyname,
         email: email,
         password: password,
         confirmpassword: confirmpassword
@@ -93,8 +93,8 @@ exports.postSignup = (req, res, next) => {
     .then(hashedPassword => {
       const user = new User(
         {
-          // username:username,
-          // companyname:companyname,
+          username:username,
+          companyname:companyname,
           email: email,
           password: hashedPassword,
           cart: { items: [] }

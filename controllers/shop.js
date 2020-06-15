@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const pdfDocument = require('pdfkit');
 const stripe = require('stripe')('sk_test_eEqEVTADedZehqa9XAf2g8c600YyNw53ai')
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 3;
 exports.getProducts = (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
@@ -39,7 +39,6 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  console.log("detailes calling",req.params.productId)
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then(product => {

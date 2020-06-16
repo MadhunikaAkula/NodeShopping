@@ -6,24 +6,29 @@
 <body>
     <%- include('../includes/navigation.ejs') %>
     <main>
-        <button class="btn btn-success "> <a class="add" href="/config/addCategeory">Add Categeory</a></button>
-      
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Categeories</th>
-                    <th>Edit</th>
-                    <!-- <th>Delete</th> -->
-                </tr>
-                
-            </thead>
-            <% for(var i=0; i < cats.length; i++) { %>
-            <tr>
-                <td><%= cats[i].name %></td>
-                <td><a href="/config/Editcategeory/<%= cats[i]._id %>?edit=true">Edit</a></td>
-                <!-- <td><a href="/config/delCategeory/<%= cats[i]._id %>">Delete</a></td> -->
-            </tr>
-            <% } %>
-        </table>
+        <div class="card">
+            <div class="card-body">
+                <button class="btn btn-success "> <a class="color" href="/config/addCategeory">Add Categeory</a></button>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Categeories</th>
+                            <th>Edit</th>
+                            <!-- <th>Delete</th> -->
+                        </tr>
+
+                    </thead>
+                    <% for(var i=0; i < cats.length; i++) { %>
+                    <tr>
+                        <td><%= cats[i].name %></td>
+                        <td><a href="/config/Editcategeory/<%= cats[i]._id %>?edit=true">Edit</a></td>
+                        <!-- <td><a href="/config/delCategeory/<%= cats[i]._id %>">Delete</a></td> -->
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
+
     </main>
     <%- include('../includes/end.ejs') %>

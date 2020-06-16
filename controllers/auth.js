@@ -44,7 +44,6 @@ exports.getSignup = (req, res, next) => {
     errorMessage: message,
     oldMessage: {
       username:'',
-      companyname:'',
       email: '',
       password: '',
       confirmpassword: ''
@@ -53,8 +52,9 @@ exports.getSignup = (req, res, next) => {
   });
 };
 exports.postSignup = (req, res, next) => {
+  const role="user"
   const username=req.body.username;
-  const companyname=req.body.companyname;
+  const companyname='user';
   const email = req.body.email;
   const password = req.body.password;
   const confirmpassword = req.body.confirmpassword;
@@ -65,8 +65,9 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: "please select capcha",
       oldMessage: {
+        role:'user',
         username:username,
-        companyname:companyname,
+        companyname:'user',
         email: email,
         password: password,
         confirmpassword: confirmpassword
@@ -80,8 +81,9 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldMessage: {
+        role:'user',
         username:username,
-        companyname:companyname,
+        companyname:'user',
         email: email,
         password: password,
         confirmpassword: confirmpassword
@@ -93,8 +95,9 @@ exports.postSignup = (req, res, next) => {
     .then(hashedPassword => {
       const user = new User(
         {
+          role:'user',
           username:username,
-          companyname:companyname,
+          companyname:'user',
           email: email,
           password: hashedPassword,
           cart: { items: [] }

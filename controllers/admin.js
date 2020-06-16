@@ -166,7 +166,10 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.find({ userId: req.user._id })
+  Product.find()
+  //for only createdusers
+  // Product.find({ userId: req.user._id })
+  
     // .select('title price -_id')
     // .populate('userId', 'name')
     .then(products => {
